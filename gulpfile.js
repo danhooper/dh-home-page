@@ -10,14 +10,3 @@ gulp.task('backend', function() {
         console.log('backend restarted');
     });
 });
-
-gulp.task('mongo', function(cb) {
-    exec('mongod --dbpath ./backend/db/', function(err, stdout, stderr) {
-        console.log(stdout);
-        console.error(stderr);
-        cb(err);
-    });
-});
-
-gulp.task('default', ['mongo', 'backend']);
-
