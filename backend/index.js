@@ -6,10 +6,22 @@ var client = new elasticsearch.Client({
 
 var express = require('express');
 var app = express();
+var rss = require('./rss');
 
-app.get('/', function(req, res) {
+var feeds = [{
+    id: 1,
+    url: 'http://feeds.arstechnica.com/arstechnica/index?format=xml',
+    title: 'ArsTechnica'
+}];
+
+app.get('/feeds', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    res.json([{url : 'http://feeds.arstechnica.com/arstechnica/index?format=xml'}, title: 'ArsTechnica']);
+    res.json(feeds);
+});
+
+app.get('/feeds/:id/article', function(req, res) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    rss.fetch(feeds[0].url, res);
 });
 
 app.listen(3000, function() {
