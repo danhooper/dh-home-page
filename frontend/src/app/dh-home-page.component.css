@@ -1,0 +1,33 @@
+.dh-rss-desc >>> img {
+  max-height: 100px;
+  max-width: 200px;
+}
+.dh-rss-right {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 50%;
+  bottom: 0;
+  max-height: 100vh;
+  overflow-y: scroll;
+  background-color: #eee;
+  padding: 20px;
+}
+
+.dh-rss-article {
+  padding: 20px;
+}
+.dh-rss-article.selected {
+  background-color: #eee;
+}
+.dh-rss-article >>> .feedflare {
+  display: none;
+}
+
+.dh-rss-left {
+  position: absolute;
+  top: 0;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+}

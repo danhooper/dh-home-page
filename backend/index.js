@@ -1,3 +1,5 @@
+const indexName = 'dh-home-page';
+
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
     host: 'localhost:9200',
@@ -5,8 +7,14 @@ var client = new elasticsearch.Client({
 });
 
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var rss = require('./rss');
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 var feeds = [{
     id: 1,
@@ -14,16 +22,41 @@ var feeds = [{
     title: 'ArsTechnica'
 }];
 
-app.get('/feeds', function(req, res) {
+app.get('/feed', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    res.json(feeds);
+    client.search({
+        idex: indexName,
+        type: 'feed'
+    }).then((response) => {
+        res.json(response);
+    });
 });
 
-app.get('/feeds/:id/article', function(req, res) {
+app.get('/feed/:id/article', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     rss.fetch(feeds[0].url, res);
+});
+
+app.options('/feed', function(req, res) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.json({});
+});
+
+app.post('/feed', function(req, res) {
+    console.log(req.body);
+    res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+    client.create({
+        index: indexName,
+        type: 'feed',
+        body: req.body
+    }).then((response) => {
+        res.json(response);
+    })
 });
 
 app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
+
+//client.indices.create({index: indexName});

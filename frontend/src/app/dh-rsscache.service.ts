@@ -8,7 +8,11 @@ export class DhRSSCacheService {
   }
 
   getFeeds () {
-      return this.http.get('http://localhost:3000/');
+      return this.http.get('http://localhost:3000/feed');
+  }
+
+  getArticles(feed) {
+      return this.http.get(`http://localhost:3000/feed/${feed.id}/article`);
   }
 
 }

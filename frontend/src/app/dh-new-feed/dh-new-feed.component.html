@@ -1,0 +1,11 @@
+<form>
+  <div>
+    <label for="title">Title</label>
+    <input type="text" [(ngModel)]="newFeed.title">
+  </div>
+  <div>
+    <label for="url">URL</label>
+    <input type="text" [(ngModel)]="newFeed.url">
+  </div>
+  <input type="submit" (click)="save()">
+</form>
