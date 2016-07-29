@@ -1,4 +1,5 @@
 const indexName = 'dh-home-page';
+var _ = require('lodash');
 
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
@@ -17,7 +18,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 var feeds = [{
-    id: 1,
     url: 'http://feeds.arstechnica.com/arstechnica/index?format=xml',
     title: 'ArsTechnica'
 }];
@@ -26,9 +26,10 @@ app.get('/feed', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     client.search({
         idex: indexName,
-        type: 'feed'
+        type: 'feed',
+        _source: ['title', 'url']
     }).then((response) => {
-        res.json(response);
+        res.json(response.hits.hits);
     });
 });
 
@@ -59,4 +60,34 @@ app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
 
-//client.indices.create({index: indexName});
+client.indices.delete({
+    index: indexName
+}).then(() => {
+    return client.indices.create({
+        index: indexName,
+        mappings: {
+            feed: {
+                properties: {
+                    title: {
+                        type: 'string'
+                    }
+                }
+            }
+
+        }
+    });
+}).then(() => {
+    client.create({
+        index: indexName,
+        type: 'feed',
+        body: feeds[0]
+    });
+})
+
+//{
+//  "properties": {
+//      "name": {
+//            "type": "string"
+//                }
+//                  }
+//                  }}}

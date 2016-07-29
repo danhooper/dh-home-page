@@ -11,11 +11,10 @@ import { DhRSSCacheService } from './dh-rsscache.service';
 export class DhHomePageAppComponent {
   title = 'dh-home-page works!';
   feeds = [];
-  selectedArticle = {selected: false};
 
   constructor(private cache: DhRSSCacheService) {
     this.cache.getFeeds().subscribe((response) => {
-      this.feeds = response.json().hits.hits;
+      this.feeds = response.json();
       for(var feed of this.feeds) {
         feed.articles = [];
         this.getArticles(feed);
@@ -24,16 +23,13 @@ export class DhHomePageAppComponent {
   }
 
   getArticles(feed) {
-    console.log('getArticles');
     this.cache.getArticles(feed).subscribe((response) => {
       feed.articles = response.json();
     });
   }
 
-  selectArticle(article) {
-    this.selectedArticle.selected = false;
-    this.selectedArticle = article;
-    this.selectedArticle.selected = true;
+  toggleArticle(article) {
+    article.expanded = !article.expanded;
   }
 
 
