@@ -1,24 +1,20 @@
 <div *ngFor="let feed of feeds">
-  <h2>
-    <a [href]="feed._source.url" target="_blank">
-      {{feed._source.title}}
-    </a>
-  </h2>
-	<ul class="list-group">
-		<li class="list-group-item dh-rss-article" *ngFor="let article of feed.articles" [ngClass]="{selected: article.selected}">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><a [href]="article.link" target="_blank">{{article.title}}</a></h3>
-			</div>
-			<div class="panel-body">
-				<div>
-					{{article.summary}}
-				</div>
-				<div (click)="toggleArticle(article)">Read More</div>
-				<div *ngIf="article.expanded" class="dh-rss-desc" [innerHTML]="article.description"></div>
-			</div>
-		</div>
-		</li>
-	</ul>
+  <ul class="list-group">
+    <li class="list-group-item dh-rss-article" *ngFor="let article of feed.articles" [ngClass]="{selected: article.selected}">
+    <div class="dh-rss-title">
+      <a [href]="feed._source.url" target="_blank">
+        {{feed._source.title}}:
+      </a>
+      <a [href]="article.link" target="_blank">{{article.title}}</a>
+    </div>
+    <div>
+      <span class="btn btn-default btn-sm" (click)="toggleArticle(article)">
+        <i class="fa" [ngClass]="{'fa-plus': !article.expanded, 'fa-minus': article.expanded}"></i>
+      </span>
+      {{article.summary}}
+      <div *ngIf="article.expanded" class="dh-rss-desc" [innerHTML]="article.description"></div>
+    </div>
+    </li>
+  </ul>
 </div>
 

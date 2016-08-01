@@ -1,3 +1,4 @@
+'use strict';
 const indexName = 'dh-home-page';
 var _ = require('lodash');
 
@@ -60,10 +61,8 @@ app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
 
-client.indices.delete({
-    index: indexName
-}).then(() => {
-    return client.indices.create({
+let createIndex = () => {
+    client.indices.create({
         index: indexName,
         mappings: {
             feed: {
@@ -75,14 +74,18 @@ client.indices.delete({
             }
 
         }
+    }).then(() => {
+        client.create({
+            index: indexName,
+            type: 'feed',
+            body: feeds[0]
+        });
     });
-}).then(() => {
-    client.create({
-        index: indexName,
-        type: 'feed',
-        body: feeds[0]
-    });
-})
+};
+
+client.indices.delete({
+    index: indexName
+}).then(createIndex).catch(createIndex);
 
 //{
 //  "properties": {

@@ -5,4 +5,6 @@
 .dh-rss-desc >>> .feedflare {
   display: none;
 }
-
+.dh-rss-title {
+  font-size: 20px;
+}
