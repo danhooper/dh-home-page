@@ -1,19 +1,31 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"><i class="fa fa-bars"></i></button>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <button class="navbar-btn btn btn-default">Add New RSS Feed</button>
+      </ul>
+    </div>
+  </div>
+</nav>
 <div *ngFor="let feed of feeds">
   <ul class="list-group">
     <li class="list-group-item dh-rss-article" *ngFor="let article of feed.articles" [ngClass]="{selected: article.selected}">
-    <div class="dh-rss-title">
-      <a [href]="feed._source.url" target="_blank">
-        {{feed._source.title}}:
-      </a>
-      <a [href]="article.link" target="_blank">{{article.title}}</a>
-    </div>
-    <div>
-      <span class="btn btn-default btn-sm" (click)="toggleArticle(article)">
-        <i class="fa" [ngClass]="{'fa-plus': !article.expanded, 'fa-minus': article.expanded}"></i>
-      </span>
-      {{article.summary}}
-      <div *ngIf="article.expanded" class="dh-rss-desc" [innerHTML]="article.description"></div>
-    </div>
+      <div class="dh-rss-title">
+        <a [href]="feed._source.url" target="_blank">
+          {{feed._source.title}}:
+        </a>
+        <a [href]="article.link" target="_blank">{{article.title}}</a>
+      </div>
+      <div>
+        <span class="btn btn-default btn-sm" (click)="toggleArticle(article)">
+          <i class="fa" [ngClass]="{'fa-plus': !article.expanded, 'fa-minus': article.expanded}"></i>
+        </span>
+        {{article.summary}}
+        <div *ngIf="article.expanded" class="dh-rss-desc" [innerHTML]="article.description"></div>
+      </div>
     </li>
   </ul>
 </div>

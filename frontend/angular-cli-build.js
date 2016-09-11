@@ -13,6 +13,8 @@ module.exports = function(defaults) {
       'rxjs/**/*.js',
       '@angular/**/*.js',
       'bootstrap/dist/css/bootstrap.min.css',
+      'bootstrap/dist/js/bootstrap.min.js',
+      'jquery/dist/jquery.js',
       'font-awesome/css/font-awesome.min.css',
       'font-awesome/fonts/*'
     ]
