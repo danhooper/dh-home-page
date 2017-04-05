@@ -2,26 +2,26 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import { RSS } from './rss';
-import { RSSArticle } from './rss-article';
+import { Feed } from './feed';
+import { Article } from './article';
 
 @Injectable()
-export class RSSService {
-	private rssUrl = 'http://localhost:3000/feed';
+export class FeedService {
+	private feedUrl = 'http://localhost:3000/feed';
   constructor(private http: Http) { }
-	getRSS(): Promise<RSS[]> {
-		return this.http.get(this.rssUrl)
+	getFeed(): Promise<Feed[]> {
+		return this.http.get(this.feedUrl)
 									 .toPromise()
-									 .then(response => response.json() as RSS[])
+									 .then(response => response.json() as Feed[])
 									 .catch(this.handleError);
   }
 
-  getArticles = (rss: RSS): Promise<RSSArticle[]> =>  {
-		return this.http.get(`${this.rssUrl}/${rss.id}/article`)
+  getArticles = (feed: Feed): Promise<Article[]> =>  {
+		return this.http.get(`${this.feedUrl}/${feed.id}/article`)
 									 .toPromise()
 									 .then(response => {
-                      rss.articles = response.json() as RSSArticle[];
-                      return rss.articles;
+                      feed.articles = response.json() as Article[];
+                      return feed.articles;
                     })
 									 .catch(this.handleError);
   }
@@ -31,3 +31,4 @@ export class RSSService {
     return Promise.reject(error.message || error);
   }
 }
+

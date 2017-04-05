@@ -3,23 +3,25 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RSSService } from './rss.service';
-import { DhFeedListComponent } from './dh-feed-list/dh-feed-list.component';
-import { DhFeedComponent } from './dh-feed/dh-feed.component';
+import { FeedListComponent } from './feed-list/feed-list.component';
+import { FeedComponent } from './feed/feed.component';
+import { FeedService } from './feed.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DhFeedListComponent,
-    DhFeedComponent
+    FeedListComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
-  providers: [RSSService],
+  providers: [FeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
