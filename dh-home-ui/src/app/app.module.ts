@@ -5,10 +5,14 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { RSSService } from './rss.service';
+import { DhFeedListComponent } from './dh-feed-list/dh-feed-list.component';
+import { DhFeedComponent } from './dh-feed/dh-feed.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DhFeedListComponent,
+    DhFeedComponent
   ],
   imports: [
     BrowserModule,

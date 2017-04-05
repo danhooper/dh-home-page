@@ -6,18 +6,12 @@ import { RSS } from './rss';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  providers: [RSSService],
+  providers: [],
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private rssService: RSSService) {}
+  constructor() {}
   ngOnInit(): void {
-    this.getRSS();
   }
 
-  getRSS(): void {
-    this.rssService.getRSS().then((rss) => this.rssList = rss);
-  }
-  title = 'app works!';
-  rssList: RSS[];
 }
