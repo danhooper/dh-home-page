@@ -46,7 +46,15 @@ app.get('/feed', function(req, res) {
 
 app.get('/feed/:id/article', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    rss.fetch(feeds[0].url, res);
+    client.get({
+        index: indexName,
+        type: 'feed',
+        id: req.params.id
+    }).then((response) => {
+        rss.fetch(response._source.url, res);
+    });
+
+
 });
 
 app.options('/feed', function(req, res) {
@@ -70,31 +78,40 @@ app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
 
-let createIndex = () => {
-    client.indices.create({
+let createFeeds = () => {
+    client.create({
         index: indexName,
-        mappings: {
-            feed: {
-                properties: {
-                    title: {
-                        type: 'string'
-                    }
-                }
-            }
-
-        }
-    }).then(() => {
-        client.create({
-            index: indexName,
-            type: 'feed',
-            body: feeds[0]
-        });
+        type: 'feed',
+        body: feeds[0]
     });
 };
 
-client.indices.delete({
-    index: indexName
-}).then(createIndex).catch(createIndex);
+let createIndex = () => {
+    client.indices.exists({
+        index: indexName,
+    }).then((exists) => {
+        if (exists) {
+            console.log(`Index ${indexName} already exists, skipping`);
+            return;
+        }
+        return client.indices.create({
+            index: indexName,
+            mappings: {
+                feed: {
+                    properties: {
+                        title: {
+                            type: 'string'
+                        }
+                    }
+                }
+            }
+        }).then(createFeeds);
+    }).catch((err) => {
+        console.log('Error: ', err);
+    });
+};
+
+createIndex();
 
 //{
 //  "properties": {

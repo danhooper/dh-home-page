@@ -1,0 +1,26 @@
+<div>
+  <h2 md-dialog-title>New RSS Feed</h2>
+    <md-dialog-content>
+    <form>
+      <div>
+        <md-input-container>
+          <input mdInput placeholder="Feed Title" name="title" [(ngModel)]="feed.title">
+        </md-input-container>
+      </div>
+      <div>
+        <md-input-container>
+          <input mdInput placeholder="Feed URL" name="url" [(ngModel)]="feed.url">
+        </md-input-container>
+      </div>
+      <div>
+        <md-input-container>
+          <input mdInput placeholder="Feed Link" name="link" [(ngModel)]="feed.link">
+        </md-input-container>
+      </div>
+    </form>
+  </md-dialog-content>
+  <md-dialog-actions>
+    <button md-raised-button (click)="saveFeed()">Save</button>
+    <button md-raised-button (click)="dialogRef.close(null)">Cancel</button>
+  </md-dialog-actions>
+</div>

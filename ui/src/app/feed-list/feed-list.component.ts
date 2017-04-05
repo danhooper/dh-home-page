@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Feed } from '../feed';
 import { FeedService } from '../feed.service';
+import { MdDialog } from '@angular/material';
+import { NewFeedComponent } from '../new-feed/new-feed.component';
 
 @Component({
   selector: 'dh-feed-list',
@@ -8,7 +10,7 @@ import { FeedService } from '../feed.service';
   styleUrls: ['./feed-list.component.scss'],
 })
 export class FeedListComponent implements OnInit {
-  constructor(private feedService: FeedService) {}
+  constructor(private feedService: FeedService, private dialog: MdDialog) {}
   ngOnInit(): void {
     this.getFeed();
   }
@@ -19,6 +21,15 @@ export class FeedListComponent implements OnInit {
       this.feedList.forEach(this.feedService.getArticles);
     });
   }
+
+  createFeed(): void {
+    let dialogRef = this.dialog.open(NewFeedComponent);
+    dialogRef.afterClosed().subscribe(feed => {
+      this.feedList.push(feed);
+      this.feedService.getArticles(feed);
+    });
+  }
+
   feedList: Feed[];
 
 
