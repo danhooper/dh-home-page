@@ -1,5 +1,5 @@
 'use strict';
-const indexName = 'dh-home-page';
+const config = require('./config');
 const esClient = require('./es-client');
 var _ = require('lodash');
 
@@ -17,16 +17,10 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-var feeds = [{
-    url: 'http://feeds.arstechnica.com/arstechnica/index?format=xml',
-    link: 'https://arstechnica.com',
-    title: 'ArsTechnica'
-}];
-
 app.get('/feed', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     client.search({
-        index: indexName,
+        index: config.indexName,
         type: 'feed',
         _source: ['title', 'url', 'link']
     }).then((response) => {
@@ -46,7 +40,7 @@ app.get('/feed', function(req, res) {
 app.get('/feed/:id/article', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     client.get({
-        index: indexName,
+        index: config.indexName,
         type: 'feed',
         id: req.params.id
     }).then((response) => {
@@ -65,7 +59,7 @@ app.options('/feed', function(req, res) {
 app.post('/feed', function(req, res) {
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
     client.create({
-        index: indexName,
+        index: config.indexName,
         type: 'feed',
         body: req.body
     }).then((response) => {
@@ -76,41 +70,6 @@ app.post('/feed', function(req, res) {
 app.listen(3000, function() {
     console.log('Example app listening on port 3000!');
 });
-
-let createFeeds = () => {
-    client.create({
-        index: indexName,
-        type: 'feed',
-        body: feeds[0]
-    });
-};
-
-let createIndex = () => {
-    client.indices.exists({
-        index: indexName,
-    }).then((exists) => {
-        if (exists) {
-            console.log(`Index ${indexName} already exists, skipping`);
-            return;
-        }
-        return client.indices.create({
-            index: indexName,
-            mappings: {
-                feed: {
-                    properties: {
-                        title: {
-                            type: 'string'
-                        }
-                    }
-                }
-            }
-        }).then(createFeeds);
-    }).catch((err) => {
-        console.log('Error: ', err);
-    });
-};
-
-createIndex();
 
 //{
 //  "properties": {
