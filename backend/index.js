@@ -1,17 +1,16 @@
 'use strict';
 const indexName = 'dh-home-page';
+const esClient = require('./es-client');
 var _ = require('lodash');
 
 var elasticsearch = require('elasticsearch');
-var client = new elasticsearch.Client({
-    host: 'localhost:9200',
-    log: 'trace'
-});
 
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
 var rss = require('./rss');
+
+let client = esClient.getClient();
 
 app.use(bodyParser.urlencoded({
     extended: true
