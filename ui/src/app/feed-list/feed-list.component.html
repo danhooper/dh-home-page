@@ -1,6 +1,4 @@
-<div>
-  <div *ngFor="let feed of feedList">
-    <dh-feed [feed]="feed"></dh-feed>
-  </div>
-  <button md-fab class="dh-new-feed" (click)="createFeed()"><md-icon>add</md-icon></button>
+<div class="dh-feed-list row">
+  <dh-feed *ngFor="let feed of feedList" [feed]="feed" class="col-md-4"></dh-feed>
+  <button class="btn btn-default dh-new-feed" (click)="createFeed()">Add</button>
 </div>

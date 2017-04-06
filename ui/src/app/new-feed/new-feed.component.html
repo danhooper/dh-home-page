@@ -1,26 +1,25 @@
-<div>
-  <h2 md-dialog-title>New RSS Feed</h2>
-    <md-dialog-content>
+<div class="modal-content">
+  <div class="modal-header">
+    <h2>New RSS Feed</h2>
+  </div>
+  <div class="modal-body">
     <form>
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Feed Title" name="title" [(ngModel)]="feed.title">
-        </md-input-container>
+      <div class="form-group">
+        <label>Feed Title</label>
+        <input class="form-control" name="title" [(ngModel)]="feed.title">
       </div>
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Feed URL" name="url" [(ngModel)]="feed.url">
-        </md-input-container>
+      <div class="form-group">
+        <label>Feed URL</label>
+        <input class="form-control" name="url" [(ngModel)]="feed.url">
       </div>
-      <div>
-        <md-input-container>
-          <input mdInput placeholder="Feed Link" name="link" [(ngModel)]="feed.link">
-        </md-input-container>
+      <div class="form-group">
+        <label>Feed Link</label>
+        <input class="form-control" name="link" [(ngModel)]="feed.link">
       </div>
     </form>
-  </md-dialog-content>
-  <md-dialog-actions>
-    <button md-raised-button (click)="saveFeed()">Save</button>
-    <button md-raised-button (click)="dialogRef.close(null)">Cancel</button>
-  </md-dialog-actions>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" (click)="saveFeed()">Save</button>
+    <button class="btn btn-secondary" (click)="activeModal.close(null)">Cancel</button>
+  </div>
 </div>

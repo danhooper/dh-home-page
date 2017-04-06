@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Feed } from '../feed';
 import { FeedService } from '../feed.service';
-import { MdDialog } from '@angular/material';
 import { NewFeedComponent } from '../new-feed/new-feed.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'dh-feed-list',
@@ -10,7 +10,7 @@ import { NewFeedComponent } from '../new-feed/new-feed.component';
   styleUrls: ['./feed-list.component.scss'],
 })
 export class FeedListComponent implements OnInit {
-  constructor(private feedService: FeedService, private dialog: MdDialog) {}
+  constructor(private feedService: FeedService, private modalService: NgbModal) {}
   ngOnInit(): void {
     this.getFeed();
   }
@@ -23,10 +23,12 @@ export class FeedListComponent implements OnInit {
   }
 
   createFeed(): void {
-    let dialogRef = this.dialog.open(NewFeedComponent);
-    dialogRef.afterClosed().subscribe(feed => {
-      this.feedList.push(feed);
-      this.feedService.getArticles(feed);
+    let modalRef = this.modalService.open(NewFeedComponent);
+    modalRef.result.then((feed) => {
+      if (feed) {
+        this.feedList.push(feed);
+        this.feedService.getArticles(feed);
+      }
     });
   }
 

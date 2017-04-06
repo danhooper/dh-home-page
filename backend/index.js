@@ -25,13 +25,12 @@ app.get('/feed', function(req, res) {
         _source: ['title', 'url', 'link']
     }).then((response) => {
         let output = _.map(response.hits.hits, (result) => {
-            let foo = {
+            return {
                 id: result._id,
                 title: result._source.title,
                 link: result._source.link,
                 url: result._source.url,
             };
-            return foo;
         });
         res.json(output);
     });
@@ -57,14 +56,22 @@ app.options('/feed', function(req, res) {
 });
 
 app.post('/feed', function(req, res) {
+    console.log('creating feed', req.body);
+    console.log({
+        index: config.indexName,
+        type: 'feed',
+        body: req.body
+    });
     res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-    client.create({
+    client.index({
         index: config.indexName,
         type: 'feed',
         body: req.body
     }).then((response) => {
-        res.json(response);
-    })
+        res.json({id: response._id});
+    }).catch((err) => {
+        console.log('Error creating feed', err);
+    });
 });
 
 app.listen(3000, function() {

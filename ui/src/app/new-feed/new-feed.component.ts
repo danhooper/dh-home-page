@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Feed } from '../feed';
-import { MdDialogRef } from '@angular/material';
 import { FeedService } from '../feed.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'dh-new-feed',
@@ -12,7 +12,7 @@ import { FeedService } from '../feed.service';
 export class NewFeedComponent implements OnInit {
   feed: Feed;
 
-  constructor(public dialogRef: MdDialogRef<NewFeedComponent>, private feedService: FeedService) {
+  constructor(private feedService: FeedService, public activeModal: NgbActiveModal) {
     this.feed = new Feed();
   }
 
@@ -21,7 +21,7 @@ export class NewFeedComponent implements OnInit {
 
   saveFeed() {
     this.feedService.saveFeed(this.feed).then((feed) => {
-      this.dialogRef.close(feed);
+      this.activeModal.close(feed);
     });
   }
 
