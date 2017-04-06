@@ -14,12 +14,15 @@ let commands = {
     deleteIndex: deleteIndex,
 }
 
-commands[command](argv);
+try {
+    commands[command](argv);
+} catch (err) {
+    console.log('Error running: ', command, argv, err);
+}
 
-
-function createBackup() {
+function createRepository() {
     let client = getClient();
-    client.snapshot.createRepository({
+    return client.snapshot.createRepository({
         repository: repositoryName,
         body: {
             type: 'fs',
@@ -27,7 +30,15 @@ function createBackup() {
                 location: config.backupDir,
             }
         }
-    }).then(() => {
+    }).catch((err) => {
+        console.log('Error creating repository', err);
+    });
+}
+
+
+function createBackup() {
+    let client = getClient();
+    createRepository().then(() => {
         let backupName = 'backup-' + new Date().toISOString().toLowerCase();
         return client.snapshot.create({
             repository: repositoryName,
@@ -42,8 +53,10 @@ function restoreBackup(argv) {
     console.log(argv);
     let client = getClient();
     console.log(config, config.indexName);
-    client.indices.close({
-        index: config.indexName,
+    createRepository().then(() => {
+        return client.indices.close({
+            index: config.indexName,
+        });
     }).then(() => {
         return client.snapshot.restore({
             repository: repositoryName,
@@ -62,11 +75,13 @@ function createIndex(argv) {
     let client = getClient();
     client.indices.create({
         index: config.indexName,
-        mappings: {
-            feed: {
-                properties: {
-                    title: {
-                        type: 'string'
+        body: {
+            mappings: {
+                feed: {
+                    properties: {
+                        title: {
+                            type: 'string'
+                        }
                     }
                 }
             }
