@@ -1,8 +1,8 @@
-const esClient = require('./es-client');
-const path = require('path');
-const minimist = require('minimist');
-const repositoryName = 'backups';
-const config = require('./config');
+import { getClient } from './es-client';
+import * as path from 'path';
+import minimist from 'minimist';
+let repositoryName = 'backups';
+import config from './config';
 
 let argv = minimist(process.argv.slice(2));
 let command = argv['_'][0];
@@ -18,13 +18,13 @@ commands[command](argv);
 
 
 function createBackup() {
-    let client = esClient.getClient();
+    let client = getClient();
     client.snapshot.createRepository({
         repository: repositoryName,
         body: {
             type: 'fs',
             settings: {
-                location: path.join(__dirname, 'backups')
+                location: config.backupDir,
             }
         }
     }).then(() => {
@@ -40,7 +40,7 @@ function createBackup() {
 
 function restoreBackup(argv) {
     console.log(argv);
-    let client = esClient.getClient();
+    let client = getClient();
     console.log(config, config.indexName);
     client.indices.close({
         index: config.indexName,
@@ -59,7 +59,7 @@ function restoreBackup(argv) {
 }
 
 function createIndex(argv) {
-    let client = esClient.getClient();
+    let client = getClient();
     client.indices.create({
         index: config.indexName,
         mappings: {
@@ -77,7 +77,7 @@ function createIndex(argv) {
 }
 
 function deleteIndex(argv) {
-    let client = esClient.getClient();
+    let client = getClient();
     client.indices.delete({
         index: config.indexName
     });

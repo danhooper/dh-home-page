@@ -1,6 +1,6 @@
-let elasticsearch = require('elasticsearch');
+import elasticsearch from 'elasticsearch';
 
-module.exports.getClient = getClient;
+export { getClient };
 
 function getClient() {
     return new elasticsearch.Client({

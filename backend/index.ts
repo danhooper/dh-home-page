@@ -1,16 +1,14 @@
 'use strict';
-const config = require('./config');
-const esClient = require('./es-client');
-var _ = require('lodash');
+import config from './config';
+import { getClient } from './es-client';
+import _map from 'lodash/map';
 
-var elasticsearch = require('elasticsearch');
+import express from 'express';
+import bodyParser from 'body-parser';
+let app = express();
+import { fetch } from './rss';
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var app = express();
-var rss = require('./rss');
-
-let client = esClient.getClient();
+let client = getClient();
 
 app.use(bodyParser.urlencoded({
     extended: true
@@ -24,7 +22,7 @@ app.get('/feed', function(req, res) {
         type: 'feed',
         _source: ['title', 'url', 'link']
     }).then((response) => {
-        let output = _.map(response.hits.hits, (result) => {
+        let output = _map(response.hits.hits, (result) => {
             return {
                 id: result._id,
                 title: result._source.title,
@@ -43,7 +41,7 @@ app.get('/feed/:id/article', function(req, res) {
         type: 'feed',
         id: req.params.id
     }).then((response) => {
-        rss.fetch(response._source.url, res);
+        fetch(response._source.url, res);
     });
 
 

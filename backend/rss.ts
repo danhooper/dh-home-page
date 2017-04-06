@@ -1,8 +1,10 @@
-var request = require('request');
-var FeedParser = require('FeedParser');
-Iconv = require('iconv').Iconv;
+import request from 'request';
+import FeedParser from 'FeedParser';
+import * as iconv from 'iconv-lite';
 
-module.exports.fetch = (feed, res) => {
+export { fetch };
+
+function fetch (feed, res) {
     console.log(feed);
     // Define our streams
     var req = request(feed, {
@@ -40,16 +42,16 @@ module.exports.fetch = (feed, res) => {
 }
 
 function maybeTranslate(res, charset) {
-    var iconv;
+    let decoder;
     // Use iconv if its not utf8 already.
-    if (!iconv && charset && !/utf-*8/i.test(charset)) {
+    if (!decoder && charset && !/utf-*8/i.test(charset)) {
         try {
-            iconv = new Iconv(charset, 'utf-8');
+            decoder = iconv.decodeStream('utf-8');
             console.log('Converting from charset %s to utf-8', charset);
-            iconv.on('error', done);
+            decoder.on('error', done);
             // If we're using iconv, stream will be the output of iconv
             // otherwise it will remain the output of request
-            res = res.pipe(iconv);
+            res = res.pipe(decoder);
         } catch (err) {
             res.emit('error', err);
         }
@@ -73,8 +75,5 @@ function getParams(str) {
 function done(err) {
     if (err) {
         console.log(err, err.stack);
-        return process.exit(1);
     }
-    server.close();
-    process.exit();
 }

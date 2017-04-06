@@ -16,6 +16,14 @@
     "feedparser": "^1.1.4",
     "iconv": "^2.2.1",
     "minimist": "^1.2.0",
-    "request": "^2.74.0"
+    "request": "^2.74.0",
+    "ts-loader": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12",
+    "iconv": "^2.2.1",
+    "iconv-lite": "^0.4.15",
+    "typescript": "^2.2.2",
+    "webpack": "^2.3.3"
   }
 }
