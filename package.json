@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "be": "nodemon backend/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "be:build": "(cd backend && ./node_modules/webpack/bin/webpack.js --watch)",
+      "be:es": "(cd backend && docker-compose up)",
+      "be:serve": "(cd backend && nodemon dist/index.js)",
+      "ui:serve": "(cd ui && ng serve -o)"
   },
   "repository": {
     "type": "git",
