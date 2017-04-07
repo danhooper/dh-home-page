@@ -7,6 +7,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 let app = express();
 import { fetch } from './rss';
+import { Feed } from '../models/feed';
 
 let client = getClient();
 
@@ -23,12 +24,7 @@ app.get('/feed', function(req, res) {
         _source: ['title', 'url', 'link']
     }).then((response) => {
         let output = _map(response.hits.hits, (result) => {
-            return {
-                id: result._id,
-                title: result._source.title,
-                link: result._source.link,
-                url: result._source.url,
-            };
+            return Feed.fromElastic(result);
         });
         res.json(output);
     });

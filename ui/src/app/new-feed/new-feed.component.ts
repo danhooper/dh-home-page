@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Feed } from '../feed';
+import { Feed } from '../../../../models/feed';
 import { FeedService } from '../feed.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 

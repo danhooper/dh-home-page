@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
-import { Feed } from './feed';
-import { Article } from './article';
+import { Feed } from '../../../models/feed';
+import { Article } from '../../../models/article';
 
 @Injectable()
 export class FeedService {

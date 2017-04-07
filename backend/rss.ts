@@ -1,6 +1,7 @@
 import request from 'request';
 import FeedParser from 'FeedParser';
 import * as iconv from 'iconv-lite';
+import { Article } from '../models/article';
 
 export { fetch };
 
@@ -36,7 +37,7 @@ function fetch (feed, res) {
     feedparser.on('readable', function() {
         var post;
         while (post = this.read()) {
-            articles.push(post);
+            articles.push(new Article(post);
         }
     });
 }

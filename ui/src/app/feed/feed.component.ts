@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Feed } from '../feed';
+import { Feed } from '../../../../models/feed';
 
 @Component({
   selector: 'dh-feed',
