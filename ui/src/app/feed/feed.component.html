@@ -1,10 +1,11 @@
-<div class="card">
+<div class="card dh-feed-card">
   <h3 class="card-header">
     <a [href]="feed.link">{{feed.title}}</a>
   </h3>
   <div class="card-block">
     <div *ngFor="let article of feed.articles">
       <a [href]="article.link" target="_blank">{{article.title}}</a>
+      <div [innerHTML]="article.description" class="dh-feed-desc"></div>
     </div>
   </div>
 </div>
