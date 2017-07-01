@@ -9,10 +9,17 @@ import { Feed } from '../../../../models/feed';
 export class FeedComponent implements OnInit {
 
   @Input() feed: Feed;
+  collapsed: boolean;
 
-  constructor() { }
+  constructor() {
+    this.collapsed = true;
+  }
 
   ngOnInit() {
+  }
+
+  toggleDesc(article) {
+    article.expanded = !article.expanded;
   }
 
 }

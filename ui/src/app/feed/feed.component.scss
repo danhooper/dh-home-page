@@ -1,7 +1,27 @@
 :host {
-  max-width: 100%;
+  overflow-x: hidden;
 }
 
 :host /deep/ img {
   max-width: 100%;
+}
+:host /deep/ table {
+  max-width: 100px;
+}
+.dh-feed-desc {
+  max-height: 1.5rem;
+  transition: .3s ease;
+  overflow: hidden;
+  /deep/ img {
+    display: none;
+  }
+  &.expanded {
+    max-height: 999em;
+    /deep/ img {
+      display: inline-block;
+    }
+  }
+}
+.article {
+  padding: 5px 0px;
 }
